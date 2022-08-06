@@ -1,61 +1,36 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import Movie from './components/Movie';
+import HomePage from './components/HomePage';
+import CartItems from './components/CartItems';
+import { Routes, Route } from "react-router-dom";
 
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('')
+  const [details, setDetails] = useState([]);
+  const [movieSelected, setMovieSelected] = useState([]);
+  const [quantity, setQuantity] = useState(0);
+  const [click, setClick] = useState(true);
 
-  const Search_API = "https://api.themoviedb.org/3/search/movie?api_key=d51576736f214393b6640a78091d101c&query="
-  const Feature_API = "https://api.themoviedb.org/3/discover/movie?api_key=d51576736f214393b6640a78091d101c&sort_by=popularity.desc"
+  const addProductFromChild = (childData) => {
+    setClick(!click)
+    setQuantity(quantity + 1)
+    setDetails(childData)
+    setMovieSelected(movieSelected ? [...movieSelected, details] : details)
+    localStorage.setItem("cart", JSON.stringify(movieSelected))
+    localStorage.setItem("quantity", JSON.stringify(quantity))
 
-  useEffect(() => {
-    getMovies(Feature_API);
-  }, [])
+  };
+ 
 
-  const getMovies = async (API) => {
-    const res = await axios.get(API)
-    const displayMovies = res.data.results
-
-    setMovies(displayMovies);
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (searchTerm) {
-      getMovies(Search_API + searchTerm)
-
-      setSearchTerm('')
-    }
-
-
-  }
-  const handleOnChange = (e) => {
-    setSearchTerm(e.target.value);
-  }
-  console.log(movies)
+  console.log("selected", movieSelected)
   return (
     <div>
-      <header>
-        <form onSubmit={handleSubmit}>
-          <input
-            className='search'
-            type="search"
-            placeholder='Search Movies....'
-            value={searchTerm}
-            onChange={handleOnChange}
-          />
-        </form>
-      </header>
-      <div className='movie-container'>
-        {movies.map(movie => (
-          <Movie key={movie.id} {...movie} />
-        ))}
-      </div>
-      
+      <Routes>
+
+        <Route path="/" element={<HomePage addProductFromChild={addProductFromChild} quantity={quantity} />} />
+        <Route path="/cart-items" element={<CartItems movieSelected={movieSelected} />} />
+
+      </Routes>
     </div>
   );
 }

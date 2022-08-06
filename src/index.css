@@ -17,9 +17,24 @@ header {
   background-color: rgb(92, 85, 85);
   padding: 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+.head-text a {
+  color: white;
+  text-decoration: none;
+}
+.badge {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+span.badge.bg-primary {
+  transform: translateX(10%);
 }
 .search {
+  width: 50rem;
   font-family: inherit;
   font-size: 1.2rem;
   border-radius: 50px;
@@ -104,4 +119,33 @@ span {
 }
 .tag.red {
   color: red;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  margin:0.5rem ;
+}
+.price-btn {
+  width: 30%;
+  height: 30px;
+  border-radius: 50px 0px 0px 50px;
+  margin-right: 0.5rem;
+}
+.price-ipt {
+  width: 60%;
+  height: 30px;
+  border-radius: 0px 50px 50px 0px;
+}
+
+.cart {
+  display: flex;
+  justify-content: center;
+  margin:0.5rem ;
+}
+
+.cart-btn {
+  width: 93%;
+  height: 30px;
+  border-radius: 50px;
 }
