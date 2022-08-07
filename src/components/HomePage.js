@@ -11,7 +11,7 @@ function HomePage({ addProductFromChild }) {
     const [movies, setMovies] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [price, setPrice] = useState('');
-    const [detail, setDetail] = useState([]);
+    const [, setDetail] = useState([]);
 
     const quantity = localStorage.getItem("quantity")
 
@@ -35,7 +35,6 @@ function HomePage({ addProductFromChild }) {
         // localStorage.setItem("price", JSON.stringify(price))
     };
     
-
     const submitPriceFromChild = (childData) => {
         setDetail(childData)
     };
@@ -57,7 +56,6 @@ function HomePage({ addProductFromChild }) {
         setSearchTerm(e.target.value);
     };
 
-    // console.log("detail",detail)
     return (
         <div>
             <header>
@@ -79,7 +77,7 @@ function HomePage({ addProductFromChild }) {
             </header>
             <div className='movie-container'>
                 {movies.map(movie => (
-                    <Movie key={movie.id} {...movie} addProduct={addProductFromChild} submitPrice= {submitPriceFromChild} createPrice={createPrice} price = {price} />
+                    <Movie key={movie.id} {...movie} addProduct={addProductFromChild} submitPrice= {submitPriceFromChild} createPrice={createPrice} price = {price} quantity= {quantity} /> 
                 ))}
             </div>
 
