@@ -2,61 +2,52 @@ import React, { useState, useEffect } from 'react'
 import { BsTrash } from 'react-icons/bs'
 import { Link } from 'react-router-dom';
 import './CartItems.css'
+import Modal from './Modal';
 const CartItems = () => {
     const [totalPrice, setTotalPrice] = useState([]);
     const [discount, setDiscount] = useState(0)
     const [sum, setSum] = useState(0)
+    const [movieSelected, setMovieSelected] = useState("");
+    const [openModal, setOpenModal] = useState(false);
 
     // const quantity = localStorage.getItem("quantity");
     const displayMovies = JSON.parse(localStorage.getItem("cart"))
 
     console.log(displayMovies === null)
-    
-    useEffect(() => {
 
+    useEffect(() => {
         if (displayMovies !== null) {
-            displayMovies.reverse().pop()
             setTotalPrice(displayMovies.map(x => parseInt(x.Price)))
-            
         }
         localStorage.setItem('Total Price', totalPrice)
     }, [])
+    console.log(movieSelected)
+    console.log(totalPrice)
 
-    console.log('test',  totalPrice.reduce((x,y) => x+y))
+    useEffect(() => {
+        const total = totalPrice.reduce((x, y) => x + y, 0)
+        setSum(total)
+        console.log("Total Price", sum)
+    }, [totalPrice])
 
-    const arr = [1,2,3]
-    const sums = arr.reduce((x,y) => x+y)
-    console.log(sums,typeof arr)
+    console.log("1",sum)
 
-    // useEffect(() => {  
-    //     const total = totalPrice.reduce((x, y) => x + y,0)
-    //     localStorage.setItem("Sum Price", total)
-    //     console.log(total)
-    // }, [totalPrice])
+    const quantity = totalPrice.length
+    console.log(quantity)
 
-    // useEffect(() => {
-    //     const sumPrice = localStorage.getItem("Sum Price")
-    //     console.log(sumPrice)
-    // }, [totalPrice])
+    useEffect(() => {
 
+        if (quantity > 5) {
+            setDiscount(0.2 * sum)
+        } else if (quantity > 3) {
+            setDiscount(0.1 * sum)
+        } else {
+            setDiscount(0)
+        }
 
-    // const quantity = totalPrice.length
-    // console.log(quantity)
+    }, [quantity])
 
-    // useEffect(() => {
-
-    //     if (quantity > 5) {
-    //         const decrease = 0.2 * sumPrice
-    //         setDiscount(decrease)
-    //     } else if (quantity > 3) {
-    //         const decrease = 0.1 * sumPrice
-    //         setDiscount(decrease)
-    //     } else {
-    //         setDiscount(0)
-    //     }
-
-    // }, [quantity])
-    // console.log("discount", discount)
+    console.log("discount", discount)
 
     return (
         <div className='container'>
@@ -82,10 +73,16 @@ const CartItems = () => {
                             </div>
                         ))}
                     </div>
-                    <div className='check-out'>
-                        <h3>Total : {300}</h3>
-                        <h3>Discount : {discount}</h3>
-                        <h3>Total Price : {150}</h3>
+                    <div className='footer'>
+                        <div className='order-div'>
+                            <button className='modalBtn' onClick={() => setOpenModal(true)}>Click To Order Products</button>
+                            {openModal && <Modal setOpenModal= {setOpenModal} openModal= {openModal}/>}
+                        </div>
+                        <div className='check-out'>
+                            <h3>Total : {sum}</h3>
+                            <h3>Discount : {discount}</h3>
+                            <h3>Total Paid : {sum - discount}</h3>
+                        </div>
                     </div>
                 </>
             ) : (

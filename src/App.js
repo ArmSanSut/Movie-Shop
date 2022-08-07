@@ -15,7 +15,8 @@ function App() {
     setClick(!click)
     setQuantity(quantity + 1)
     setDetails(childData)
-    setMovieSelected(movieSelected ? [...movieSelected, details] : details)
+    console.log('test',movieSelected)
+    setMovieSelected([...movieSelected, childData])
     localStorage.setItem("cart", JSON.stringify(movieSelected))
     localStorage.setItem("quantity", JSON.stringify(quantity))
 
